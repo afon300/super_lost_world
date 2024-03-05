@@ -7,7 +7,8 @@ def cls():
     
 def resolutions_ecran():
     print("----- Entrez la taille de l'écran -----\n1. HD : 1280x720\n2. FHD : 1920x1080\n3. 2K : 2560x1440\n4. 4K : 3840x2160")
-    x = int(input(" Entrez une valeur : "))
+    # x = int(input(" Entrez une valeur : "))
+    x = 1
     if x == 1:
         WINDOW_WIDTH = 1280
         WINDOW_HEIGHT = 720
@@ -20,7 +21,8 @@ def resolutions_ecran():
     if x == 4:
         WINDOW_WIDTH = 3840
         WINDOW_HEIGHT = 2160
-    return WINDOW_WIDTH, WINDOW_HEIGHT
+    WINDOW_SIZE = (WINDOW_WIDTH, WINDOW_HEIGHT)
+    return WINDOW_SIZE
 
 
 def draw_text(text, font, color, surface, x, y):
@@ -38,12 +40,15 @@ def main_menu(BLACK, WHITE, font, screen):
 
         button_1 = pygame.Rect(50, 100, 200, 50)
         button_2 = pygame.Rect(50, 200, 200, 50)
+        button_3 = pygame.Rect(50, 300, 200, 50)
 
         pygame.draw.rect(screen, WHITE, button_1)
         pygame.draw.rect(screen, WHITE, button_2)
+        pygame.draw.rect(screen, WHITE, button_3)
 
         draw_text('Jouer', font, BLACK, screen, 70, 110)
-        draw_text('Quitter', font, BLACK, screen, 70, 210)
+        draw_text('Option', font, BLACK, screen, 70, 210)
+        draw_text('Quitter', font, BLACK, screen, 70, 310)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -53,6 +58,8 @@ def main_menu(BLACK, WHITE, font, screen):
                 if button_1.collidepoint((mx, my)):
                     print('Jouer')
                 if button_2.collidepoint((mx, my)):
+                    print('Option')
+                if button_3.collidepoint((mx, my)):
                     pygame.quit()
                     sys.exit()
 
