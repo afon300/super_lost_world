@@ -10,8 +10,8 @@ def resolutions_ecran():
     # x = int(input(" Entrez une valeur : "))
     x = 1
     if x == 1:
-        WINDOW_WIDTH = 1280
-        WINDOW_HEIGHT = 720
+        WINDOW_WIDTH = 800
+        WINDOW_HEIGHT = 600
     if x == 2:
         WINDOW_WIDTH = 1920
         WINDOW_HEIGHT = 1080
