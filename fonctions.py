@@ -9,9 +9,12 @@ def resolutions_ecran():
     print("----- Entrez la taille de l'écran -----\n1. HD : 1280x720\n2. FHD : 1920x1080\n3. 2K : 2560x1440\n4. 4K : 3840x2160")
     # x = int(input(" Entrez une valeur : "))
     x = 1
-    if x == 1:
+    if x == 0:
         WINDOW_WIDTH = 800
         WINDOW_HEIGHT = 600
+    if x == 1:
+        WINDOW_WIDTH = 1240
+        WINDOW_HEIGHT = 720
     if x == 2:
         WINDOW_WIDTH = 1920
         WINDOW_HEIGHT = 1080

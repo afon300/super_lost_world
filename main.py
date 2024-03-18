@@ -13,13 +13,23 @@ pygame.display.set_caption("Super lost world")
 pygame.init()
 screen = pygame.display.set_mode(WINDOW_SIZE)
 pygame.display.set_caption("Main Menu")
-game_paused = False
+game_paused = True
 menu_state = "main"
 font = pygame.font.SysFont("arialblack", 40)
 
 TEXT_COL = (255, 255, 255)
 
 ################################# IMAGES BOUTTONS MENU #################################
+
+menu_start_img = pygame.image.load("images_menu/menu_start.png").convert_alpha()
+menu_end_img = pygame.image.load("images_menu/menu_end.png").convert_alpha()
+menu_options_img = pygame.image.load("images_menu/menu_options.png").convert_alpha()
+MENU_SIZE = (1240, 720)
+endgame = False
+if not endgame:
+    background_img = pygame.transform.scale(menu_start_img, MENU_SIZE)
+else:
+    background_img = pygame.transform.scale(menu_end_img, MENU_SIZE)
 
 resume_img = pygame.image.load("button/button_play.png").convert_alpha()
 options_img = pygame.image.load("button/button_option.png").convert_alpha()
@@ -29,21 +39,22 @@ audio_img = pygame.image.load("button/button_audio.png").convert_alpha()
 keys_img = pygame.image.load("button/button_keys.png").convert_alpha()
 back_img = pygame.image.load("button/button_back.png").convert_alpha()
 
-resume_img = pygame.transform.scale(resume_img, (200, 100))
-options_img = pygame.transform.scale(options_img, (200, 100))
-quit_img = pygame.transform.scale(quit_img, (200, 100))
-video_img = pygame.transform.scale(video_img, (200, 100))
-audio_img = pygame.transform.scale(audio_img, (200, 100))
-keys_img = pygame.transform.scale(keys_img, (200, 100))
-back_img = pygame.transform.scale(back_img, (200, 100))
+button_size = (200, 100)
+resume_img = pygame.transform.scale(resume_img, button_size)
+options_img = pygame.transform.scale(options_img, button_size)
+quit_img = pygame.transform.scale(quit_img, button_size)
+video_img = pygame.transform.scale(video_img, button_size)
+audio_img = pygame.transform.scale(audio_img, button_size)
+keys_img = pygame.transform.scale(keys_img, button_size)
+back_img = pygame.transform.scale(back_img, button_size)
 
-resume_button = button.Button(304, 125, resume_img, 1)
-options_button = button.Button(297, 250, options_img, 1)
-quit_button = button.Button(336, 375, quit_img, 1)
-video_button = button.Button(226, 75, video_img, 1)
-audio_button = button.Button(225, 200, audio_img, 1)
-keys_button = button.Button(246, 325, keys_img, 1)
-back_button = button.Button(332, 450, back_img, 1)
+resume_button = button.Button(300, 125, resume_img, 1)
+options_button = button.Button(300, 225, options_img, 1)
+quit_button = button.Button(300, 325, quit_img, 1)
+video_button = button.Button(300, 125, video_img, 1)
+audio_button = button.Button(300, 225, audio_img, 1)
+keys_button = button.Button(300, 325, keys_img, 1)
+back_button = button.Button(300, 425, back_img, 1)
 
 def draw_text(text, font, text_col, x, y):
   img = font.render(text, True, text_col)
@@ -56,7 +67,7 @@ run = True
 while run:
 
   screen.fill((52, 78, 91))
-
+  screen.blit(background_img, (0, 0))
 
   if game_paused == True:
     if menu_state == "main":
@@ -85,7 +96,6 @@ while run:
         game_paused = True
     if event.type == pygame.QUIT:
       run = False
-
   pygame.display.update()
 
 pygame.quit()
