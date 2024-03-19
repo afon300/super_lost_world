@@ -30,7 +30,7 @@ MENU_SIZE = (1240, 720)
 endgame = False
 if not endgame:
     background_img = pygame.transform.scale(menu_start_img, MENU_SIZE)
-    title_img = pygame.transform.scale(title_start_img, (200, 600))
+    title_img = pygame.transform.scale(title_start_img, (700, 100))
 else:
     background_img = pygame.transform.scale(menu_end_img, MENU_SIZE)
     title_img = pygame.transform.scale(title_end_img, (200, 300))
