@@ -24,12 +24,17 @@ TEXT_COL = (255, 255, 255)
 menu_start_img = pygame.image.load("images_menu/menu_start.png").convert_alpha()
 menu_end_img = pygame.image.load("images_menu/menu_end.png").convert_alpha()
 menu_options_img = pygame.image.load("images_menu/menu_options.png").convert_alpha()
+title_start_img = pygame.image.load("images_menu/title_start.png").convert_alpha()
+title_end_img = pygame.image.load("images_menu/title_end.png").convert_alpha()
 MENU_SIZE = (1240, 720)
 endgame = False
 if not endgame:
     background_img = pygame.transform.scale(menu_start_img, MENU_SIZE)
+    title_img = pygame.transform.scale(title_start_img, (200, 600))
 else:
     background_img = pygame.transform.scale(menu_end_img, MENU_SIZE)
+    title_img = pygame.transform.scale(title_end_img, (200, 300))
+background_options_img = pygame.transform.scale(menu_options_img, MENU_SIZE)
 
 resume_img = pygame.image.load("button/button_play.png").convert_alpha()
 options_img = pygame.image.load("button/button_option.png").convert_alpha()
@@ -48,13 +53,13 @@ audio_img = pygame.transform.scale(audio_img, button_size)
 keys_img = pygame.transform.scale(keys_img, button_size)
 back_img = pygame.transform.scale(back_img, button_size)
 
-resume_button = button.Button(300, 125, resume_img, 1)
-options_button = button.Button(300, 225, options_img, 1)
-quit_button = button.Button(300, 325, quit_img, 1)
-video_button = button.Button(300, 125, video_img, 1)
-audio_button = button.Button(300, 225, audio_img, 1)
-keys_button = button.Button(300, 325, keys_img, 1)
-back_button = button.Button(300, 425, back_img, 1)
+resume_button = button.Button(300, 225, resume_img, 1)
+options_button = button.Button(300, 325, options_img, 1)
+quit_button = button.Button(300, 425, quit_img, 1)
+video_button = button.Button(300, 225, video_img, 1)
+audio_button = button.Button(300, 325, audio_img, 1)
+keys_button = button.Button(300, 425, keys_img, 1)
+back_button = button.Button(300, 525, back_img, 1)
 
 def draw_text(text, font, text_col, x, y):
   img = font.render(text, True, text_col)
@@ -68,7 +73,8 @@ while run:
 
   screen.fill((52, 78, 91))
   screen.blit(background_img, (0, 0))
-
+  screen.blit(title_img, (0, 0))
+  
   if game_paused == True:
     if menu_state == "main":
       if resume_button.draw(screen):
@@ -78,6 +84,8 @@ while run:
       if quit_button.draw(screen):
         run = False
     if menu_state == "options":
+      screen.blit(background_options_img, (0, 0))
+      
       if video_button.draw(screen):
         print("Video Settings")
       if audio_button.draw(screen):
