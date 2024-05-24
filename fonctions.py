@@ -67,3 +67,7 @@ def main_menu(BLACK, WHITE, font, screen):
                     sys.exit()
 
         pygame.display.update()
+        
+def load_and_scale_image(file, size):
+    image = pygame.image.load(file).convert_alpha()
+    return pygame.transform.scale(image, size)
