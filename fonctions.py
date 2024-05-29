@@ -6,7 +6,7 @@ def cls():
     os.system('cls' if os.name == 'nt' else 'clear')
     
 def resolutions_ecran():
-    print("----- Entrez la taille de l'écran -----\n1. HD : 1280x720\n2. FHD : 1920x1080\n3. 2K : 2560x1440\n4. 4K : 3840x2160")
+    # print("----- Entrez la taille de l'écran -----\n1. HD : 1280x720\n2. FHD : 1920x1080\n3. 2K : 2560x1440\n4. 4K : 3840x2160")
     # x = int(input(" Entrez une valeur : "))
     x = 1
     if x == 0:
@@ -25,7 +25,7 @@ def resolutions_ecran():
         WINDOW_WIDTH = 3840
         WINDOW_HEIGHT = 2160
     WINDOW_SIZE = (WINDOW_WIDTH, WINDOW_HEIGHT)
-    return WINDOW_SIZE
+    return WINDOW_SIZE, WINDOW_HEIGHT, WINDOW_WIDTH
 
 
 def draw_text(text, font, color, surface, x, y):
