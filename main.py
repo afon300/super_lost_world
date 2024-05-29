@@ -93,8 +93,49 @@ character_speed = 5
 frame_rate = 10
 frame = 0
 direction = "down"
-is_moving = False
+play_with_joystick = False
 
+def keyboard_input():
+    keys = pygame.key.get_pressed()
+    if keys[pygame.K_LEFT]:
+        input_key = 'left'
+    elif keys[pygame.K_RIGHT]:
+        input_key = 'right'
+    elif keys[pygame.K_DOWN]:
+        input_key = 'down'
+    elif keys[pygame.K_UP]:
+        input_key = 'up'
+    else:
+        input_key = None
+    return input_key
+
+
+if pygame.joystick.get_count() > 0:
+    joystick = pygame.joystick.Joystick(0)
+    joystick.init()
+    play_with_joystick = True
+    
+def controller_input():
+    if pygame.joystick.get_count() == 0:
+        return None
+    
+    joystick = pygame.joystick.Joystick(0)
+    joystick.init()
+    axis = joystick.get_axis(0), joystick.get_axis(1)
+
+    if axis[0] < -0.5:
+        input_key = 'left'
+    elif axis[0] > 0.5:
+        input_key = 'right'
+    elif axis[1] < -0.5:
+        input_key = 'up'
+    elif axis[1] > 0.5:
+        input_key = 'down'
+    else:
+        input_key = None
+        
+    return input_key    
+    
 ################################## BOUCLE PRINCIPALE ###################################
 
 run = True
@@ -103,12 +144,8 @@ while run:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
                 state_main_menu = True
-            else:
-                is_moving = True
         if event.type == pygame.QUIT:
             run = False
-        if event.type == pygame.KEYUP:
-            is_moving = False
 
     if state_main_menu:
         screen.fill((52, 78, 91))
@@ -135,49 +172,24 @@ while run:
     else:
         screen.fill((0, 0, 0))
         screen.blit(exemple_map_img, (0, 0))
-        
-        if is_moving:
-            frame += 1
-            if frame >= len(animations[direction]) * frame_rate:
-                frame = 0
 
-        for i in range(pygame.joystick.get_count()):
-          joystick = pygame.joystick.Joystick(i)
-          joystick.init()
-          axis = joystick.get_axis(0), joystick.get_axis(1)
-
-        if axis[0] < -0.5:
-            character_x -= character_speed
-            direction = 'left'
-        elif axis[0] > 0.5:
-            character_x += character_speed
-            direction = 'right'
-        elif axis[1] < -0.5:
-            character_y -= character_speed
-            direction = 'up'
-        elif axis[1] > 0.5:
-            character_y += character_speed
-            direction = 'down'
-
-        keys = pygame.key.get_pressed()
-        if keys[pygame.K_LEFT]:
-            character_x -= character_speed
-            direction = 'left'
-        elif keys[pygame.K_RIGHT]:
-            character_x += character_speed
-            direction = 'right'
-        elif keys[pygame.K_UP]:
-            character_y -= character_speed
-            direction = 'up'
-        elif keys[pygame.K_DOWN]:
-            character_y += character_speed
-            direction = 'down'
-
+        if play_with_joystick:
+            input_key = controller_input()
         else:
-            frame = 0
+            input_key = keyboard_input()
 
-        image = animations[direction][frame // frame_rate]
-        screen.blit(image, (character_x, character_y))
+        if input_key == 'left':
+            character_x -= character_speed
+            direction = 'left'
+        elif input_key == 'right':
+            character_x += character_speed
+            direction = 'right'
+        elif input_key == 'up':
+            character_y -= character_speed
+            direction = 'up'
+        elif input_key == 'down':
+            character_y += character_speed
+            direction = 'down'
 
     pygame.display.flip()
     clock.tick(60)
