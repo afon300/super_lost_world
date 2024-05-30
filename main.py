@@ -86,7 +86,7 @@ walk_right = [load_and_scale_image('main_character/marche/kadhafi_droit_1.png', 
               load_and_scale_image('main_character/marche/kadhafi_droit_2.png', CHARACTER_SIZE), 
               load_and_scale_image('main_character/marche/kadhafi_droit_3.png', CHARACTER_SIZE),
               load_and_scale_image('main_character/marche/kadhafi_droit_4.png', CHARACTER_SIZE)]
-animations = {
+kadhafi_animations = {
     'down': walk_down,
     'up': walk_up,
     'left': walk_left,
@@ -97,55 +97,33 @@ BLOB_SIZE = (32, 32)
 blob_animation = [load_and_scale_image('PNJ/Mobs/blob/blob_1.png', CHARACTER_SIZE),
                    load_and_scale_image('PNJ/Mobs/blob/blob_2.png', CHARACTER_SIZE),
                    load_and_scale_image('PNJ/Mobs/blob/blob_3.png', CHARACTER_SIZE)]
-blob_rect = blob_animation[0].get_rect()
     
-
-
 character_x = 300
 character_y = 200
+
+blob_x = random.randint(100, 600)
+blob_y = random.randint(100, 600)
 clock = pygame.time.Clock()
 
-character_speed = 4
-blob_speed = 1
-chase_blob_speed = 2
+
 frame_rate = 10
+
 frame = 0
-blob_frame = 0
+character_speed = 4
 direction = "down"
 is_moving = False
+
+blob_frame = 0
+blob_speed = 3
+blob_direction = "down"
+blob_is_moving = False
+
 
 exemple_map = pygame.image.load("exemple.png").convert_alpha()
 exemple_map_img = pygame.transform.scale(exemple_map, MENU_SIZE)
 
 keyboard = True
 controller = False
-
-blob_rect.x = random.randint(0, WINDOW_WIDTH - blob_rect.width)
-blob_rect.y = random.randint(0, WINDOW_HEIGHT - blob_rect.height)
-
-def move_monster(monster_rect, player_rect, is_alive):
-    if is_alive:
-        # Si le monstre est vivant, vérifiez la position relative du joueur
-        if player_rect.centerx < monster_rect.centerx:
-            monster_rect.x -= chase_blob_speed
-        elif player_rect.centerx > monster_rect.centerx:
-            monster_rect.x += chase_blob_speed
-
-        if player_rect.centery < monster_rect.centery:
-            monster_rect.y -= chase_blob_speed
-        elif player_rect.centery > monster_rect.centery:
-            monster_rect.y += chase_blob_speed
-    else:
-        # Si le monstre est mort, déplacez-le de manière aléatoire
-        direction = random.choice(['up', 'down', 'left', 'right'])
-        if direction == 'up' and monster_rect.top > 0:
-            monster_rect.y -= blob_speed
-        elif direction == 'down' and monster_rect.bottom < WINDOW_HEIGHT:
-            monster_rect.y += blob_speed
-        elif direction == 'left' and monster_rect.left > 0:
-            monster_rect.x -= blob_speed
-        elif direction == 'right' and monster_rect.right < WINDOW_WIDTH:
-            monster_rect.x += blob_speed
 
 
 if pygame.joystick.get_count() > 0:
@@ -160,7 +138,7 @@ last_press = 0
 input_delay = 750
 
 def handle_joystick_events():
-    global character_x, character_y, direction, is_moving, last_press
+    global character_x, character_y, direction, is_moving, last_press, frame
 
     if controller:
         x_axis = joystick.get_axis(0)
@@ -171,45 +149,55 @@ def handle_joystick_events():
         if last_press >= input_delay:
             if joystick.get_button(0):
                 print("A")
+                is_moving = False
+                frame = 0
             if joystick.get_button(1):
                 print("B")
+                is_moving = False
+                frame = 0
             last_press = 0
-            is_moving = False
         else:
             last_press += pygame.time.get_ticks() - last_tick
     else:
-        if x_axis < -threshold:
-            character_x -= character_speed
-            direction = 'left'
-            is_moving = True
-        elif x_axis > threshold:
-            character_x += character_speed
-            direction = 'right'
-            is_moving = True
-        elif y_axis < -threshold:
-            character_y -= character_speed
-            direction = 'up'
-            is_moving = True
-        elif y_axis > threshold:
-            character_y += character_speed
-            direction = 'down'
-            is_moving = True
+        if abs(x_axis) > threshold or abs(y_axis) > threshold:
+            if x_axis < -threshold:
+                character_x -= character_speed
+                direction = 'left'
+                is_moving = True
+            elif x_axis > threshold:
+                character_x += character_speed
+                direction = 'right'
+                is_moving = True
+            if y_axis < -threshold:
+                character_y -= character_speed
+                direction = 'up'
+                is_moving = True
+            elif y_axis > threshold:
+                character_y += character_speed
+                direction = 'down'
+                is_moving = True
         else:
             is_moving = False
+            frame = 0
+            
 def handle_keyboard_input():
-    global character_x, character_y, direction, is_moving, last_press
+    global character_x, character_y, direction, is_moving, last_press, frame
 
     keys = pygame.key.get_pressed()
     if keys[pygame.K_a] or keys[pygame.K_z]:
         if last_press >= input_delay:
             if keys[pygame.K_a]:
                 print("A")
+                is_moving = False
+                frame = 0
             if keys[pygame.K_z]:
                 print("Z")
+                is_moving = False
+                frame = 0
             last_press = 0
         else:
             last_press += pygame.time.get_ticks() - last_tick
-    else:
+    if (keys[pygame.K_a] != True) and (keys[pygame.K_z] != True):
         if keys[pygame.K_LEFT]:
             character_x -= character_speed
             direction = 'left'
@@ -228,6 +216,11 @@ def handle_keyboard_input():
             is_moving = True
         else:
             is_moving = False
+            frame = 0
+    else:
+        is_moving = False
+        frame = 0
+
 def handle_input():
     global character_x, character_y, direction, is_moving, frame, image
     if controller:
@@ -238,26 +231,12 @@ def handle_input():
 # def annimations_kadhafi(frame, frame_rate):
 #     if is_moving:
 #         frame += 1
-#     if frame >= len(animations[direction]) * frame_rate:
+#     if frame >= len(kadhafi_animations[direction]) * frame_rate:
 #         frame = 0
-#     image = animations[direction][frame // frame_rate]
+#     image = kadhafi_animations[direction][frame // frame_rate]
 #     screen.blit(image, (character_x, character_y))
         
 #     screen.blit(image, (character_x, character_y))
-
-
-class Monster(pygame.Rect):
-    def __init__(self, x, y, width, height):
-        super().__init__(x, y, width, height)
-        self.is_alive = True
-
-class Player(pygame.Rect):
-    def __init__(self, x, y, width, height):
-        super().__init__(x, y, width, height)
-        
-player_rect = Player(400, 300, 20, 20)
-
-monster_rect = Monster(100, 100, 30, 30)
 
 is_alive = True
 
@@ -298,26 +277,19 @@ while run:
             if back_button.draw(screen):
                 menu_state = "main"
     if world_map:
-        monster_rect.animation_counter += 1
-        if monster_rect.animation_counter == 30:  # 30 frames = 1 seconde à 30 FPS
-            monster_rect.animation_counter = 0
-            monster_rect.move_randomly()
         screen.fill((0, 0, 0))
         screen.blit(exemple_map_img, (0, 0))
-        
-        screen.blit(blob_animation[blob_frame], blob_rect)
-        if pygame.time.get_ticks() % blob_speed == 0:
-            blob_frame = (blob_frame + 1) % len(blob_animation)
         
         handle_input()
         if is_moving:
             frame += 1
-        if frame >= len(animations[direction]) * frame_rate:
+        if frame >= len(kadhafi_animations[direction]) * frame_rate:
             frame = 0
-        image = animations[direction][frame // frame_rate]
+        image = kadhafi_animations[direction][frame // frame_rate]
         screen.blit(image, (character_x, character_y))
-            
-        screen.blit(image, (character_x, character_y))
+        
+        blob_img = blob_animation[blob_frame // frame_rate]
+        screen.blit(blob_img, (blob_x, blob_y))
     pygame.display.flip()
     clock.tick(60)
 
