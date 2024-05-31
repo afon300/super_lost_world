@@ -157,7 +157,7 @@ input_delay = 750
 last_hit_time = 0
 
 def handle_joystick_events():
-    global character_x, character_y, direction, is_moving, last_press, frame, is_attack, is_attacking
+    global character_x, character_y, direction, is_moving, last_press, frame, is_attack, is_attacking, last_tick
 
     if controller:
         x_axis = joystick.get_axis(0)
@@ -202,7 +202,7 @@ def handle_joystick_events():
             frame = 0
             
 def handle_keyboard_input():
-    global character_x, character_y, direction, is_moving, last_press, frame, is_attack, last_tick
+    global character_x, character_y, direction, is_moving, last_press, frame, is_attack, is_attacking, last_tick
 
     keys = pygame.key.get_pressed()
     current_time = pygame.time.get_ticks()
@@ -211,6 +211,7 @@ def handle_keyboard_input():
             if keys[pygame.K_a]:
                 print("A")
                 is_attack = True
+                is_attacking = True
                 is_moving = False
                 frame = 0
             if keys[pygame.K_z]:
@@ -318,7 +319,7 @@ while run:
         handle_input()
         handle_blob_movement()
         
-        # Animation de marche
+        # marche
         if is_moving and not is_attack:
             frame += 1
             if frame >= len(kadhafi_walk_animations[direction]) * frame_rate:
@@ -326,8 +327,9 @@ while run:
             image = kadhafi_walk_animations[direction][frame // frame_rate]
             screen.blit(image, (character_x, character_y))
 
-        # Animation d'attaque
+        # attaque
         if is_attack:
+            is_moving = False
             frame += 1
             if frame >= len(kadhafi_attack_animations[direction]) * frame_rate:
                 frame = 0
@@ -335,7 +337,7 @@ while run:
             image = kadhafi_attack_animations[direction][frame // frame_rate]
             screen.blit(image, (character_x, character_y))
 
-            # Collision de l'attaque avec le blob
+            # Collision
             current_time = pygame.time.get_ticks()
             if check_collision(character_x, character_y, CHARACTER_SIZE, blob_x, blob_y, BLOB_SIZE):
                 if current_time - last_hit_time >= 500:
@@ -345,7 +347,6 @@ while run:
                         blob_alive = False
                     print(f"Blob health: {blob_health}")
 
-        # Si aucune animation n'est en cours, afficher l'image par défaut
         if not is_moving and not is_attack:
             image = kadhafi_walk_animations[direction][0]
             screen.blit(image, (character_x, character_y))
@@ -362,3 +363,5 @@ while run:
 
 pygame.quit()
 sys.exit()
+
+#Aventure, exploration, polution , réfléchir, découvrir
