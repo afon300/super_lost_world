@@ -322,7 +322,7 @@ while run:
         # marche
         if is_moving and not is_attack:
             frame += 1
-            if frame >= len(kadhafi_walk_animations[direction]) * frame_rate:
+            if frame >= 30:
                 frame = 0
             image = kadhafi_walk_animations[direction][frame // frame_rate]
             screen.blit(image, (character_x, character_y))
@@ -332,6 +332,7 @@ while run:
             is_moving = False
             frame += 1
             if frame >= len(kadhafi_attack_animations[direction]) * frame_rate:
+                print(len(kadhafi_attack_animations[direction]) * frame_rate)
                 frame = 0
                 is_attack = False
             image = kadhafi_attack_animations[direction][frame // frame_rate]
@@ -364,4 +365,6 @@ while run:
 pygame.quit()
 sys.exit()
 
-#Aventure, exploration, polution , réfléchir, découvrir
+
+
+#Notre Jeux vidéo consiste à intégrer un monde de fantaisie au sein du quel l'exploration et l'aventure sont les mots d'ordre, le joueur devras résoudre des enigmes et afronter des ennemies pour dépolluer ce monde dévasté
