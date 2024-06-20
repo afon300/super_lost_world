@@ -416,9 +416,9 @@ while run:
             if back_button.draw(screen):
                 menu_state = "main"
     if world_map:
-        # if not music_playing:  # Jouer la musique une seule fois
-        #     pygame.mixer.music.play(-1)
-        #     music_playing = True
+        if not music_playing:  # Jouer la musique une seule fois
+             pygame.mixer.music.play(-1)
+             music_playing = True
             
         screen.fill((0, 0, 0))
         screen.blit(background_map_img, (0, 0))
