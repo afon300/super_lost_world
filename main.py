@@ -20,11 +20,11 @@ TEXT_COL = (255, 255, 255)
 
 ################################# IMAGES BOUTTONS MENU #################################
 
-menu_start_img = pygame.image.load("images_menu/menu_start.png").convert_alpha()
-menu_end_img = pygame.image.load("images_menu/menu_end.png").convert_alpha()
-menu_options_img = pygame.image.load("images_menu/menu_options.png").convert_alpha()
-title_start_img = pygame.image.load("images_menu/title_start.png").convert_alpha()
-title_end_img = pygame.image.load("images_menu/title_end.png").convert_alpha()
+menu_start_img = pygame.image.load("images/menu/menu_start.png").convert_alpha()
+menu_end_img = pygame.image.load("images/menu/menu_end.png").convert_alpha()
+menu_options_img = pygame.image.load("images/menu/menu_options.png").convert_alpha()
+title_start_img = pygame.image.load("images/menu/title_start.png").convert_alpha()
+title_end_img = pygame.image.load("images/menu/title_end.png").convert_alpha()
 MENU_SIZE = (1240, 720)
 endgame = False
 
@@ -154,9 +154,9 @@ foudre_direction = "down"
 foudre_is_moving = False
 foudre_alive = True
 
-background_map = pygame.image.load("background.bmp")
+background_map = pygame.image.load("images/maps/background.bmp")
 background_map_img = pygame.transform.scale(background_map, MENU_SIZE)
-collision_map = pygame.image.load("collision_img.bmp")
+collision_map = pygame.image.load("images/collisions/collision_img.bmp")
 collision_map_img = pygame.transform.scale(collision_map, MENU_SIZE)
 
 keyboard = True
@@ -189,7 +189,6 @@ def change_map(new_background_path, new_collision_path):
 
         character_x, character_y = start_x, start_y
 
-
 actual_map = 1
 
 def check_player_position():
@@ -200,17 +199,13 @@ def check_player_position():
         if actual_map == 1 and current_player_x < 10:  # Exemple de condition pour la zone bleue sur la carte 1
             start_x = 1100
             start_y = 450
-            change_map("background_2.bmp", "collision_img_2.bmp")
+            change_map("images/maps/background_2.bmp", "images/collisions/collision_img_2.bmp")
             actual_map = 2
         elif actual_map == 2 and current_player_x > WINDOW_WIDTH - 10:  # Exemple de condition pour la zone bleue sur la carte 2
             start_x = 50
             start_y = 450
-            change_map("background.bmp", "collision_img.bmp")
+            change_map("images/maps/background.bmp", "images/collisions/collision_img.bmp")
             actual_map = 1
-
-
-
-
 
 def handle_joystick_events():
     global character_x, character_y, direction, is_moving, last_press, frame, is_attack, is_attacking, last_tick
@@ -375,8 +370,7 @@ def check_collision_with_obstacles(x, y):
             return True
     return False
 
-
-pygame.mixer.music.load("musique_de_fond.mp3")
+pygame.mixer.music.load("musiques/musique_de_fond.mp3")
 pygame.mixer.music.set_volume(0.2)
 music_playing = False 
 world_map = False

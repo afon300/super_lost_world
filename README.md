@@ -26,7 +26,7 @@ Le programme s'exécute dans le 'main.py' et les fonctions se trouvent dans le '
 ## Composition
 
 * Le programme est composé de deux parties accessibles depuis le **menu** en exécutant le 'main.py'
-* Le programme est aussi composé de qutres dossiers le dossier 'button', le dossier 'images_menu', le dossier 'main_character' et le dossier 'PNJ'.
-* Le dossier **button** contients les éléments du menu, le dossier **images_menu** contiens les images du background du menu, le dossier **main_character** contiens toutes les images du personnage principal et enfin le dossier **PNJ** contiens toutes les images des monstrees
+* Le programme est aussi composé de **6** dossiers le dossier 'button', le dossier 'images_menu', le dossier 'main_character', le dossier musiques et le dossier 'PNJ'.
+* Le dossier **button** contients les éléments du menu, le dossier **images_menu** contiens les images du background du menu, le dossier **main_character** contiens toutes les images du personnage principal, le dossier musiques sert à stocker les musiques du jeu et enfin le dossier **PNJ** contiens toutes les images des monstrees
 
 # Merci
