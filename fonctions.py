@@ -6,9 +6,7 @@ def cls():
     os.system('cls' if os.name == 'nt' else 'clear')
     
 def resolutions_ecran():
-    # print("----- Entrez la taille de l'écran -----\n1. HD : 1280x720\n2. FHD : 1920x1080\n3. 2K : 2560x1440\n4. 4K : 3840x2160")
-    # x = int(input(" Entrez une valeur : "))
-    x = 1
+    x = 1 #résolution de base de 1240px : 720px (720p / HD)
     if x == 0:
         WINDOW_WIDTH = 800
         WINDOW_HEIGHT = 600

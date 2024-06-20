@@ -175,6 +175,13 @@ input_delay = 750
 last_hit_time = 0
 
 def change_map(new_background_path, new_collision_path):
+    """
+    Change la carte actuelle en chargeant une nouvelle image de fond et une nouvelle image de collision.
+
+    Parameters:
+    new_background_path (str): Chemin vers la nouvelle image de fond.
+    new_collision_path (str): Chemin vers la nouvelle image de collision.
+    """
     global background_map, background_map_img, collision_map, collision_map_img, character_x, character_y
 
     # Vérifier si la position actuelle du joueur touche la couleur bleue
@@ -187,27 +194,35 @@ def change_map(new_background_path, new_collision_path):
         collision_map = pygame.image.load(new_collision_path)
         collision_map_img = pygame.transform.scale(collision_map, MENU_SIZE)
 
+        # Réinitialiser la position du personnage
         character_x, character_y = start_x, start_y
 
 actual_map = 1
 
 def check_player_position():
+    """
+    Vérifie la position du joueur et change de carte si nécessaire.
+    """
     global actual_map, start_x, start_y
 
+    # Obtenir la position actuelle du joueur
     current_player_x, current_player_y = character_x, character_y
     if collision_map_img.get_at((current_player_x, current_player_y)) == (0, 0, 255):
-        if actual_map == 1 and current_player_x < 10:  # Exemple de condition pour la zone bleue sur la carte 1
+        if actual_map == 1 and current_player_x < 10:  # Condition pour la zone bleue sur la carte 1
             start_x = 1100
             start_y = 450
             change_map("images/maps/background_2.bmp", "images/collisions/collision_img_2.bmp")
             actual_map = 2
-        elif actual_map == 2 and current_player_x > WINDOW_WIDTH - 10:  # Exemple de condition pour la zone bleue sur la carte 2
+        elif actual_map == 2 and current_player_x > WINDOW_WIDTH - 10:  # Condition pour la zone bleue sur la carte 2
             start_x = 50
             start_y = 450
             change_map("images/maps/background.bmp", "images/collisions/collision_img.bmp")
             actual_map = 1
 
 def handle_joystick_events():
+    """
+    Permet de détecter les touches d'une manette pour les mouvements et les actions du personnage.
+    """
     global character_x, character_y, direction, is_moving, last_press, frame, is_attack, is_attacking, last_tick
 
     if controller:
@@ -215,6 +230,7 @@ def handle_joystick_events():
         y_axis = joystick.get_axis(1)
         threshold = 0.1
 
+        # Gérer les boutons du joystick
         if joystick.get_button(0) or joystick.get_button(1):
             if last_press >= input_delay:
                 if joystick.get_button(0):
@@ -231,6 +247,7 @@ def handle_joystick_events():
             else:
                 last_press += pygame.time.get_ticks() - last_tick
         else:
+            # Gérer les axes du joystick pour le mouvement
             if abs(x_axis) > threshold or abs(y_axis) > threshold:
                 new_x, new_y = character_x, character_y
                 if x_axis < -threshold:
@@ -246,6 +263,7 @@ def handle_joystick_events():
                     new_y += character_speed
                     direction = 'down'
 
+                # Vérifier les collisions avant de déplacer le personnage
                 if not check_collision_with_obstacles(new_x, new_y):
                     character_x, character_y = new_x, new_y
                     is_moving = True
@@ -256,6 +274,9 @@ def handle_joystick_events():
                 frame = 0
 
 def handle_keyboard_input():
+    """
+    Gère les entrées du clavier pour les mouvements et les actions du personnage.
+    """
     global character_x, character_y, direction, is_moving, last_press, frame, is_attack, is_attacking, last_tick
 
     keys = pygame.key.get_pressed()
@@ -288,6 +309,7 @@ def handle_keyboard_input():
             new_y += character_speed
             direction = 'down'
 
+        # Vérifier les collisions avant de déplacer le personnage
         if not check_collision_with_obstacles(new_x, new_y):
             character_x, character_y = new_x, new_y
             is_moving = True
@@ -296,19 +318,27 @@ def handle_keyboard_input():
         frame = 0
 
 def handle_input():
+    """
+    Gère les entrées manettes ou du clavier selon ce qui est connecté.
+    """
     if controller:
         handle_joystick_events()
     if keyboard:
         handle_keyboard_input()
 
 def handle_blob_movement():
+    """
+    Gère le mouvement aléatoire des blobs.
+    """
     global blob_x, blob_y, blob_direction, blob_is_moving, blob_frame
 
+    # Changer la direction aléatoirement
     if random.randint(1, 20) == 1:
         direction = random.choice(['left', 'right', 'up', 'down'])
         blob_direction = direction
         blob_is_moving = True
 
+    # Déplacer le blob dans la direction choisie
     if blob_is_moving:
         if blob_direction == 'left':
             blob_x -= blob_speed
@@ -319,6 +349,7 @@ def handle_blob_movement():
         elif blob_direction == 'down':
             blob_y += blob_speed
 
+    # Vérifier les limites de l'écran pour le blob
     if blob_x < 0:
         blob_x = 0
     elif blob_x > WINDOW_WIDTH - BLOB_SIZE[0]:
@@ -330,13 +361,18 @@ def handle_blob_movement():
         blob_y = WINDOW_HEIGHT - BLOB_SIZE[1]
         
 def handle_foudre_movement():
+    """
+    Gère le mouvement aléatoire des foudres.
+    """
     global foudre_x, foudre_y, foudre_direction, foudre_is_moving, foudre_frame
 
+    # Changer la direction aléatoirement
     if random.randint(1, 20) == 1:
         direction = random.choice(['left', 'right', 'up', 'down'])
         foudre_direction = direction
         foudre_is_moving = True
 
+    # Déplacer la foudre dans la direction choisie
     if foudre_is_moving:
         if foudre_direction == 'left':
             foudre_x -= foudre_speed
@@ -347,6 +383,7 @@ def handle_foudre_movement():
         elif foudre_direction == 'down':
             foudre_y += foudre_speed
 
+    # Vérifier les limites de l'écran pour la foudre
     if foudre_x < 0:
         foudre_x = 0
     elif foudre_x > WINDOW_WIDTH - FOUDRE_SIZE[0]:
