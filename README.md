@@ -1,5 +1,5 @@
 # Earth tech project 
-# superlostworld
+# super_lost_world
 
 ---
 
@@ -19,8 +19,8 @@ Le programme s'exécute dans le 'main.py' et les fonctions se trouvent dans le '
 
 ## Autres Informations
 
-* Cloner le repo via `https://github.com/afon300/pychatbot-Fourneyron-Tadrist-pmp.git`
-* Dossier du Projet : `cd pychatbot-Fourneyron-Tadrist-pmp`
+* Cloner le repo via `https://github.com/afon300/pychatbot-Fourneyron-Tadrist-pmp.git](https://github.com/afon300/super_lost_world.git`
+* Dossier du Projet : `cd super_lost_world`
 * Programme Principal `main.py`
 
 ## Composition
