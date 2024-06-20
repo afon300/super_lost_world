@@ -2,7 +2,6 @@ import pygame
 import button
 import sys
 import random
-import time
 from fonctions import *
 
 # Initialisation de Pygame
