@@ -131,7 +131,6 @@ foudre_y = random.randint(100, 600)
 
 blob_health = 2
 foudre_health = 4
-
 clock = pygame.time.Clock()
 
 frame_rate = 10
